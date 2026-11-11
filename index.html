@@ -182,32 +182,32 @@
           <p class="text-xs text-slate-700 font-medium">${data.doNow}</p>
         </div>
 
-        <div class="bg-blue-50/60 border-l-4 border-blue-400 p-4 rounded-r-xl mb-4">
-          <div class="flex items-center gap-2 mb-1 text-blue-700 font-bold text-sm">
-            <span>🔄 IF IT DOESN'T WORK</span>
-          </div>
-          <p class="text-xs text-slate-600">${data.ifFails}</p>
-        </div>
-
-        <div class="bg-emerald-50/60 border-l-4 border-emerald-500 p-4 rounded-r-xl mb-4">
-          <div class="flex items-center gap-2 mb-1 text-emerald-800 font-bold text-sm">
-            <span>🤝 REACH OUT / GET HELP</span>
-          </div>
-          <p class="text-[11px] text-emerald-700 mb-3">${data.reachOutRole}</p>
-          <div class="bg-white border border-emerald-200/80 rounded-lg p-3 relative">
-            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2">
-              <span>💬 READY SCRIPT (1-Click Copy)</span>
-              <button onclick="copyScript(this)" class="bg-slate-800 text-white text-[10px] px-2.5 py-1 rounded hover:bg-slate-700 transition flex items-center gap-1">
-                📋 Copy Text
-              </button>
+       <div class="bg-[#EBF0F5]/80 border-l-4 border-[#7A94B0] p-4 rounded-r-xl mb-4">
+                <div class="flex items-center gap-2 mb-1 text-[#1B3B36] font-bold text-sm">
+                    <span>🔄 IF IT DOESN'T WORK</span>
+                </div>
+                <p class="text-xs text-[#3A524E]">${data.ifFails}</p>
             </div>
-            <pre class="text-xs font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">${data.reachOutText}</pre>
-          </div>
-        </div>
 
-        <button onclick="triggerWexioOpen()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2 text-sm mt-4">
-          <span>💬</span> Open Plan B AI Assistant
-        </button>
+            <div class="bg-[#EAF2ED]/90 border-l-4 border-[#6B9E83] p-4 rounded-r-xl mb-4">
+                <div class="flex items-center gap-2 mb-1 text-[#1B3B36] font-bold text-sm">
+                    <span>🤝 REACH OUT / GET HELP</span>
+                </div>
+                <p class="text-[11px] text-[#3A524E] mb-3">${data.reachOutRole}</p>
+                <div class="bg-[#FAF9F5] border border-[#6B9E83]/40 rounded-lg p-3 relative">
+                    <div class="flex items-center justify-between text-[11px] text-[#5A736E] mb-2">
+                        <span>💬 READY SCRIPT (1-Click Copy)</span>
+                        <button onclick="copyScript(this)" class="bg-[#1B3B36] text-[#F6F5EE] text-[10px] px-2.5 py-1 rounded hover:bg-[#234842] transition flex items-center gap-1">
+                            📋 Copy Text
+                        </button>
+                    </div>
+                    <pre class="text-xs font-mono text-[#1B3B36] whitespace-pre-wrap leading-relaxed">${data.reachOutText}</pre>
+                </div>
+            </div>
+
+            <button onclick="triggerWexioOpen()" class="w-full py-3 bg-[#1B3B36] hover:bg-[#234842] text-[#F6F5EE] font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+                <span>💬</span> Open Plan B AI Assistant
+            </button>
       `;
 
       document.getElementById('contentPanel').classList.remove('hidden');
