@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plan B — When the world doesn't come with instructions</title>
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -17,14 +19,19 @@
       }
     }
   </script>
+
   <style>
-    iframe[src*="wexio"], #wexio-widget-container {
+    iframe[src*="wexio"], 
+    #wexio-widget-container,
+    .wexio-widget-iframe {
       z-index: 99999 !important;
+      display: block !important;
     }
   </style>
 </head>
 <body class="bg-brandBg text-slate-800 min-h-screen flex flex-col font-sans">
 
+  <!-- Header -->
   <header class="bg-brandDark text-white py-6 px-4 shadow-md">
     <div class="max-w-4xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -42,185 +49,63 @@
     </div>
   </header>
 
-  <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-6">
+  <!-- Main Content -->
+  <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-6 flex flex-col items-center justify-center">
     <div class="text-center my-8">
       <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">What is happening right now?</h2>
-      <p class="text-slate-600 text-sm">Select the option that best matches how you feel at this moment.</p>
+      <p class="text-slate-600 text-sm">Select an option to start a direct session with the Plan B Assistant.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-      <button onclick="selectScenario('start')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
-        <span class="text-2xl mb-2 block">🚀</span>
-        <h3 class="font-bold text-slate-800 mb-1">Don't know where to start</h3>
+    <!-- 4 Cards de Ação direta para o Bot -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-8">
+      
+      <button onclick="triggerBot('I don\'t know where to start with my task. Can you help me break it down into tiny micro-steps?')" 
+              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
+        <span class="text-3xl mb-3 block">🚀</span>
+        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">Don't know where to start</h3>
         <p class="text-xs text-slate-500">You have an overwhelming task and need to extract just the first tiny action.</p>
       </button>
 
-      <button onclick="selectScenario('how')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
-        <span class="text-2xl mb-2 block">🏛️</span>
-        <h3 class="font-bold text-slate-800 mb-1">Don't know how to do it</h3>
+      <button onclick="triggerBot('I don\'t know how to complete an administrative or bureaucratic process. How do I proceed?')" 
+              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
+        <span class="text-3xl mb-3 block">🏛️</span>
+        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">Don't know how to do it</h3>
         <p class="text-xs text-slate-500">Unclear bureaucracy, administrative hurdles, or service procedures.</p>
       </button>
 
-      <button onclick="selectScenario('say')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
-        <span class="text-2xl mb-2 block">💬</span>
-        <h3 class="font-bold text-slate-800 mb-1">Don't know what to say</h3>
+      <button onclick="triggerBot('I need to draft a message to request help or ask for more time without friction. Can you write a template for me?')" 
+              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
+        <span class="text-3xl mb-3 block">💬</span>
+        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">Don't know what to say</h3>
         <p class="text-xs text-slate-500">Need to send a request, clarify a deadline, or ask for help without friction.</p>
       </button>
 
-      <button onclick="selectScenario('stuck')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
-        <span class="text-2xl mb-2 block">🧠</span>
-        <h3 class="font-bold text-slate-800 mb-1">I'm feeling stuck</h3>
+      <button onclick="triggerBot('I\'m feeling stuck and cognitively frozen right now. What is my instant micro-step?')" 
+              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
+        <span class="text-3xl mb-3 block">🧠</span>
+        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">I'm feeling stuck</h3>
         <p class="text-xs text-slate-500">Get an instant micro-step and penalty-free fallback alternative.</p>
       </button>
-    </div>
 
-    <div id="contentPanel" class="hidden bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-8">
-      <button onclick="resetSelection()" class="text-xs text-slate-400 hover:text-slate-600 mb-4 inline-block">
-        ← Back to situational starters
-      </button>
-
-      <div id="scenarioDetail"></div>
-
-      <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-        <button id="completeBtn" onclick="toggleComplete()" class="bg-brandDark text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-900 transition flex items-center gap-2">
-          <span>✓</span> I COMPLETED THIS STEP
-        </button>
-        <div class="flex items-center gap-2">
-          <span>Did this help you move forward?</span>
-          <button onclick="sendFeedback(true)" class="hover:opacity-75">👍</button>
-          <button onclick="sendFeedback(false)" class="hover:opacity-75">👎</button>
-        </div>
-      </div>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="py-4 text-center text-xs text-slate-400 border-t border-slate-200/60 bg-white/50">
     Plan B © 2026 — Designed for executive autonomy and cognitive relief.
   </footer>
 
+  <!-- Script para abrir e enviar mensagem ao Bot da Wexio -->
   <script>
-    const scenarios = {
-      start: {
-        tag: "EXECUTIVE AUTONOMY",
-        title: "Break Down an Overwhelming Task",
-        subtitle: "Start a task when paralysis prevents you from initiating.",
-        doNow: "Write down or type ONLY the very first micro-step that takes under 2 minutes (e.g., open the blank document or find a pen).",
-        ifFails: "If it still feels too big, cut the step in half: just open your laptop screen or sit at your desk. You do not need to finish the task.",
-        reachOutRole: "A trusted friend, colleague, or mentor",
-        reachOutText: "Can you help me choose the first step?\n\nI need to work on [TASK], but I'm struggling to figure out where to start."
-      },
-      how: {
-        tag: "ADMINISTRATIVE & PROCEDURES",
-        title: "Clarify a Service or Administrative Requirement",
-        subtitle: "Confirm online options before planning in-person visits.",
-        doNow: "Identify the exact issue and check the service app or website to see if it can be resolved online.",
-        ifFails: "If the online portal is confusing, don't rush there in person. Send an email or message asking if an appointment is needed and what documents to bring.",
-        reachOutRole: "Customer Support / Service Helpdesk",
-        reachOutText: "Hello,\n\nI need to handle [ISSUE].\n\nCan this be resolved online? If not, what documents do I need to bring and do I need an appointment?"
-      },
-      say: {
-        tag: "FRICTIONLESS COMMUNICATION",
-        title: "Draft a Direct & Low-Friction Request",
-        subtitle: "Ask for support or extended time without explaining or apologizing.",
-        doNow: "Use a clear, 2-sentence template. State what you need and propose a realistic timeline.",
-        ifFails: "If drafting feels difficult, send a brief heads-up now and promise the details by a specific time.",
-        reachOutRole: "Manager, Client, or Peer",
-        reachOutText: "Hi [NAME],\n\nI am working on [TASK/PROJECT]. To ensure it's done thoroughly, I will deliver it by [DATE/TIME].\n\nDoes this timeline work for you?"
-      },
-      stuck: {
-        tag: "COGNITIVE RELIEF",
-        title: "Unstuck Your Brain (2-Minute Rule)",
-        subtitle: "Break out of cognitive freeze without guilt.",
-        doNow: "Set a timer for 2 minutes. Do any tiny action related to your goal, then stop when the timer rings.",
-        ifFails: "If you cannot start, take a 5-minute break away from your screen. Returning later is a valid strategic choice, not a failure.",
-        reachOutRole: "Self / Accountable Support",
-        reachOutText: "I'm feeling stuck with [TASK]. I am taking a 5-minute reset and will try one tiny step at [TIME]."
+    function triggerBot(promptText) {
+      // Tenta abrir o widget via API global da Wexio se disponível
+      if (window.Wexio) {
+        if (typeof window.Wexio.open === 'function') window.Wexio.open();
+        if (typeof window.Wexio.sendMessage === 'function') {
+          window.Wexio.sendMessage(promptText);
+          return;
+        }
       }
-    };
 
-    function selectScenario(key) {
-      const data = scenarios[key];
-      const detail = document.getElementById('scenarioDetail');
-
-      detail.innerHTML = `
-        <span class="text-xs font-bold tracking-wider text-amber-700 uppercase mb-1 block">${data.tag}</span>
-        <h3 class="text-xl font-bold text-slate-800 mb-1">${data.title}</h3>
-        <p class="text-xs text-slate-500 mb-6">${data.subtitle}</p>
-
-        <div class="bg-amber-50/80 border-l-4 border-amber-500 p-4 rounded-r-xl mb-4">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-amber-600 font-bold text-sm">⚡ DO THIS NOW</span>
-            <span class="text-[10px] bg-amber-200/60 text-amber-900 px-2 py-0.5 rounded-full font-medium">< 2 minutes</span>
-          </div>
-          <p class="text-xs text-slate-700 font-medium">${data.doNow}</p>
-        </div>
-
-        <div class="bg-blue-50/60 border-l-4 border-blue-400 p-4 rounded-r-xl mb-4">
-          <div class="flex items-center gap-2 mb-1 text-blue-700 font-bold text-sm">
-            <span>🔄 IF IT DOESN'T WORK</span>
-          </div>
-          <p class="text-xs text-slate-600">${data.ifFails}</p>
-        </div>
-
-        <div class="bg-emerald-50/60 border-l-4 border-emerald-500 p-4 rounded-r-xl">
-          <div class="flex items-center gap-2 mb-1 text-emerald-800 font-bold text-sm">
-            <span>🤝 REACH OUT / GET HELP</span>
-          </div>
-          <p class="text-[11px] text-emerald-700 mb-3">${data.reachOutRole}</p>
-          <div class="bg-white border border-emerald-200/80 rounded-lg p-3 relative">
-            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2">
-              <span>💬 READY SCRIPT (1-Click Copy)</span>
-              <button onclick="copyScript(this)" class="bg-slate-800 text-white text-[10px] px-2.5 py-1 rounded hover:bg-slate-700 transition flex items-center gap-1">
-                📋 Copy Text
-              </button>
-            </div>
-            <pre class="text-xs font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">${data.reachOutText}</pre>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('contentPanel').classList.remove('hidden');
-      document.getElementById('contentPanel').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function resetSelection() {
-      document.getElementById('contentPanel').classList.add('hidden');
-    }
-
-    function copyScript(btn) {
-      const pre = btn.parentElement.nextElementSibling;
-      navigator.clipboard.writeText(pre.innerText);
-      const originalText = btn.innerHTML;
-      btn.innerHTML = "✓ Copied!";
-      btn.classList.replace('bg-slate-800', 'bg-emerald-600');
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.classList.replace('bg-emerald-600', 'bg-slate-800');
-      }, 2000);
-    }
-
-    function toggleComplete() {
-      const btn = document.getElementById('completeBtn');
-      if (btn.classList.contains('bg-brandDark')) {
-        btn.classList.replace('bg-brandDark', 'bg-emerald-600');
-        btn.innerHTML = "<span>✓</span> STEP COMPLETED!";
-      } else {
-        btn.classList.replace('bg-emerald-600', 'bg-brandDark');
-        btn.innerHTML = "<span>✓</span> I COMPLETED THIS STEP";
-      }
-    }
-
-    function sendFeedback(positive) {
-      alert(positive ? "Thank you! Keep going, one step at a time." : "Understood. We'll make the next steps even simpler.");
-    }
-  </script>
-
-  <!-- Wexio Widget Loader -->
-  <script
-    async
-    src="https://cdn.wexio.io/widget/loader.js"
-    data-public-key="pk_live_DwJ7XQ1e4elYM6fpElWm7m2b0t_nbGLL"
-  ></script>
-
-</body>
-</html>
+      // Fallback: faz o clique no botão/iframe do widge
+      const widgetEl = document.querySelector('
