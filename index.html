@@ -21,11 +21,12 @@
   </script>
 
   <style>
-    iframe[src*="wexio"], 
-    #wexio-widget-container,
-    .wexio-widget-iframe {
+    /* Garante que o componente do widget fica flutuante e sobreposto */
+    wexio-widget, iframe[src*="wexio"] {
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
       z-index: 99999 !important;
-      display: block !important;
     }
   </style>
 </head>
@@ -50,43 +51,57 @@
   </header>
 
   <!-- Main Content -->
-  <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-6 flex flex-col items-center justify-center">
+  <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-6">
     <div class="text-center my-8">
       <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">What is happening right now?</h2>
-      <p class="text-slate-600 text-sm">Select an option to start a direct session with the Plan B Assistant.</p>
+      <p class="text-slate-600 text-sm">Select the option that best matches how you feel at this moment.</p>
     </div>
 
-    <!-- 4 Cards de Ação direta para o Bot -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-8">
-      
-      <button onclick="triggerBot('I don\'t know where to start with my task. Can you help me break it down into tiny micro-steps?')" 
-              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
-        <span class="text-3xl mb-3 block">🚀</span>
-        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">Don't know where to start</h3>
+    <!-- 4 Scenario Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <button onclick="selectScenario('start')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
+        <span class="text-2xl mb-2 block">🚀</span>
+        <h3 class="font-bold text-slate-800 mb-1">Don't know where to start</h3>
         <p class="text-xs text-slate-500">You have an overwhelming task and need to extract just the first tiny action.</p>
       </button>
 
-      <button onclick="triggerBot('I don\'t know how to complete an administrative or bureaucratic process. How do I proceed?')" 
-              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
-        <span class="text-3xl mb-3 block">🏛️</span>
-        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">Don't know how to do it</h3>
+      <button onclick="selectScenario('how')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
+        <span class="text-2xl mb-2 block">🏛️</span>
+        <h3 class="font-bold text-slate-800 mb-1">Don't know how to do it</h3>
         <p class="text-xs text-slate-500">Unclear bureaucracy, administrative hurdles, or service procedures.</p>
       </button>
 
-      <button onclick="triggerBot('I need to draft a message to request help or ask for more time without friction. Can you write a template for me?')" 
-              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
-        <span class="text-3xl mb-3 block">💬</span>
-        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">Don't know what to say</h3>
+      <button onclick="selectScenario('say')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
+        <span class="text-2xl mb-2 block">💬</span>
+        <h3 class="font-bold text-slate-800 mb-1">Don't know what to say</h3>
         <p class="text-xs text-slate-500">Need to send a request, clarify a deadline, or ask for help without friction.</p>
       </button>
 
-      <button onclick="triggerBot('I\'m feeling stuck and cognitively frozen right now. What is my instant micro-step?')" 
-              class="text-left p-6 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition group cursor-pointer">
-        <span class="text-3xl mb-3 block">🧠</span>
-        <h3 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700">I'm feeling stuck</h3>
+      <button onclick="selectScenario('stuck')" class="text-left p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-600 hover:shadow-md transition">
+        <span class="text-2xl mb-2 block">🧠</span>
+        <h3 class="font-bold text-slate-800 mb-1">I'm feeling stuck</h3>
         <p class="text-xs text-slate-500">Get an instant micro-step and penalty-free fallback alternative.</p>
       </button>
+    </div>
 
+    <!-- Active Scenario Content Panel -->
+    <div id="contentPanel" class="hidden bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-8">
+      <button onclick="resetSelection()" class="text-xs text-slate-400 hover:text-slate-600 mb-4 inline-block">
+        ← Back to situational starters
+      </button>
+
+      <div id="scenarioDetail"></div>
+
+      <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+        <button id="completeBtn" onclick="toggleComplete()" class="bg-brandDark text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-900 transition flex items-center gap-2">
+          <span>✓</span> I COMPLETED THIS STEP
+        </button>
+        <div class="flex items-center gap-2">
+          <span>Did this help you move forward?</span>
+          <button onclick="sendFeedback(true)" class="hover:opacity-75">👍</button>
+          <button onclick="sendFeedback(false)" class="hover:opacity-75">👎</button>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -95,17 +110,24 @@
     Plan B © 2026 — Designed for executive autonomy and cognitive relief.
   </footer>
 
-  <!-- Script para abrir e enviar mensagem ao Bot da Wexio -->
-  <script>
-    function triggerBot(promptText) {
-      // Tenta abrir o widget via API global da Wexio se disponível
-      if (window.Wexio) {
-        if (typeof window.Wexio.open === 'function') window.Wexio.open();
-        if (typeof window.Wexio.sendMessage === 'function') {
-          window.Wexio.sendMessage(promptText);
-          return;
-        }
-      }
+  <!-- Web Component & Loader do Wexio -->
+  <script type="module" src="https://cdn.wexio.io/widget/widget.js"></script>
+  <script async src="https://cdn.wexio.io/widget/loader.js" data-public-key="pk_live_DwJ7XQ1e4elYM6fpElWm7m2b0t_nbGLL"></script>
+  <wexio-widget public-key="pk_live_DwJ7XQ1e4elYM6fpElWm7m2b0t_nbGLL"></wexio-widget>
 
-      // Fallback: faz o clique no botão/iframe do widge
-      const widgetEl = document.querySelector('
+  <!-- Application Logic -->
+  <script>
+    const scenarios = {
+      start: {
+        tag: "EXECUTIVE AUTONOMY",
+        title: "Break Down an Overwhelming Task",
+        subtitle: "Start a task when paralysis prevents you from initiating.",
+        doNow: "Write down or type ONLY the very first micro-step that takes under 2 minutes (e.g., open the blank document or find a pen).",
+        ifFails: "If it still feels too big, cut the step in half: just open your laptop screen or sit at your desk. You do not need to finish the task.",
+        reachOutRole: "A trusted friend, colleague, or mentor",
+        reachOutText: "Can you help me choose the first step?\n\nI need to work on [TASK], but I'm struggling to figure out where to start."
+      },
+      how: {
+        tag: "ADMINISTRATIVE & PROCEDURES",
+        title: "Clarify a Service or Administrative Requirement",
+        subtitle: "Confirm online options before planning in-person visits
