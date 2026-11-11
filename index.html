@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan B — When the world doesn't come with instructions</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#1E3A34',   /* Dark Green from logo */
+                        brandAccent: '#E4A968', /* Warm Terracotta/Beige */
+                        brandBg: '#F7F5F0'     /* Low cognitive load background */
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brandBg text-slate-800 min-h-screen flex flex-col font-sans">
+
+    <!-- Main Header -->
+    <header class="bg-brandDark text-white p-4 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <!-- Brand Badge -->
+                <div class="w-10 h-10 rounded-full bg-brandAccent flex items-center justify-center font-bold text-brandDark text-xl">
+                    BP
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide">Plan B</h1>
+                    <p class="text-xs text-emerald-200">When the world doesn't come with instructions</p>
+                </div>
+            </div>
+            <span class="text-xs bg-emerald-800 text-emerald-200 px-3 py-1 rounded-full border border-emerald-600">Global Edition</span>
+        </div>
+    </header>
+
+    <!-- Main SPA Container -->
+    <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+
+        <!-- STEP 1: Entry Starters -->
+        <section id="starter-section" class="space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl font-bold text-brandDark">What is happening right now?</h2>
+                <p class="text-slate-600 text-sm">Select the option that best matches how you feel at this moment.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="selectStarter('PB-001')" class="p-5 bg-white border-2 border-slate-200 rounded-xl hover:border-brandAccent hover:shadow-lg transition flex flex-col items-start text-left group">
+                    <span class="text-2xl mb-2">🚀</span>
+                    <h3 class="font-bold text-brandDark group-hover:text-amber-700">Don't know where to start</h3>
+                    <p class="text-xs text-slate-500 mt-1">You have an overwhelming task and need to extract just the first tiny action.</p>
+                </button>
+
+                <button onclick="selectStarter('PB-002')" class="p-5 bg-white border-2 border-slate-200 rounded-xl hover:border-brandAccent hover:shadow-lg transition flex flex-col items-start text-left group">
+                    <span class="text-2xl mb-2">🏛️</span>
+                    <h3 class="font-bold text-brandDark group-hover:text-amber-700">Don't know how to do it</h3>
+                    <p class="text-xs text-slate-500 mt-1">Unclear bureaucracy, administrative hurdles, or service procedures.</p>
+                </button>
+
+                <button onclick="selectStarter('PB-003')" class="p-5 bg-white border-2 border-slate-200 rounded-xl hover:border-brandAccent hover:shadow-lg transition flex flex-col items-start text-left group">
+                    <span class="text-2xl mb-2">💬</span>
+                    <h3 class="font-bold text-brandDark group-hover:text-amber-700">Don't know what to say</h3>
+                    <p class="text-xs text-slate-500 mt-1">Need to send a request, clarify a deadline, or ask for help without friction.</p>
+                </button>
+
+                <button onclick="selectStarter('PB-004')" class="p-5 bg-white border-2 border-brandDark rounded-xl hover:bg-brandDark hover:text-white transition flex flex-col items-start text-left group">
+                    <span class="text-2xl mb-2">🧠</span>
+                    <h3 class="font-bold text-brandDark group-hover:text-white">I'm feeling stuck</h3>
+                    <p class="text-xs text-slate-500 group-hover:text-emerald-100 mt-1">Get an instant micro-step and penalty-free fallback alternative.</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 2: Single Focus Action Card -->
+        <section id="action-card" class="hidden space-y-4">
+            <button onclick="resetUI()" class="text-xs text-slate-500 hover:text-brandDark flex items-center gap-1 mb-2">
+                ← Back to situational starters
+            </button>
+
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-6 space-y-6">
+
+                <!-- Header & Purpose -->
+                <div class="border-b border-slate-100 pb-4">
+                    <span id="card-category" class="text-xs uppercase tracking-wider font-semibold text-brandAccent">Category</span>
+                    <h2 id="card-title" class="text-xl font-bold text-brandDark mt-1">Scenario Title</h2>
+                    <p id="card-purpose" class="text-sm text-slate-600 mt-1">Short objective description.</p>
+                </div>
+
+                <!-- ⚡ 1. DO THIS NOW -->
+                <div class="bg-amber-50 border-l-4 border-brandAccent p-4 rounded-r-lg space-y-1">
+                    <h3 class="font-bold text-amber-900 flex items-center gap-2">
+                        ⚡ DO THIS NOW <span class="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded font-normal">&lt; 2 minutes</span>
+                    </h3>
+                    <p id="card-action" class="text-sm text-amber-950">Immediate micro-step...</p>
+                </div>
+
+                <!-- 🔄 2. IF IT DOESN'T WORK -->
+                <div class="bg-slate-50 border-l-4 border-slate-400 p-4 rounded-r-lg space-y-1">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        🔄 IF IT DOESN'T WORK
+                    </h3>
+                    <p id="card-alternative" class="text-sm text-slate-600">Guilt-free alternative...</p>
+                </div>
+
+                <!-- 🤝 3. REACH OUT / GET HELP -->
+                <div class="bg-emerald-50 border-l-4 border-brandDark p-4 rounded-r-lg space-y-3">
+                    <div>
+                        <h3 class="font-bold text-brandDark">🤝 REACH OUT / GET HELP</h3>
+                        <p id="card-who" class="text-xs text-emerald-800 mt-0.5">Contact or entity...</p>
+                    </div>
+
+                    <!-- 💬 READY-TO-USE SCRIPT + 1-Click Copy -->
+                    <div class="bg-white p-3 rounded-lg border border-emerald-200 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-semibold text-slate-500">💬 READY SCRIPT (1-Click Copy)</span>
+                            <button onclick="copyToClipboard()" id="copy-btn" class="text-xs bg-brandDark text-white px-3 py-1 rounded hover:bg-emerald-800 transition">
+                                📋 Copy Text
+                            </button>
+                        </div>
+                        <p id="card-script" class="text-xs font-mono bg-slate-50 p-2 rounded text-slate-700 whitespace-pre-wrap">Pre-written script...</p>
+                    </div>
+                </div>
+
+                <!-- Action Bar & Feedback -->
+                <div class="pt-4 flex flex-col sm:flex-row gap-3 justify-between items-center border-t border-slate-100">
+                    <button onclick="resetUI()" class="w-full sm:w-auto bg-brandDark text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-emerald-900 transition text-sm">
+                        ✅ I COMPLETED THIS STEP
+                    </button>
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <span>Did this help you move forward?</span>
+                        <button onclick="sendFeedback(true)" class="p-1.5 hover:bg-slate-100 rounded">👍</button>
+                        <button onclick="sendFeedback(false)" class="p-1.5 hover:bg-slate-100 rounded">👎</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        Plan B © 2026 — Designed for executive autonomy and cognitive relief.
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        const database = {
+            "PB-001": {
+                category: "Executive Autonomy",
+                title: "Break Down an Overwhelming Task",
+                purpose: "Start a task when paralysis prevents you from initiating.",
+                action: "Write down or type ONLY the very first micro-step that takes under 2 minutes (e.g., open the blank document or find a pen).",
+                alternative: "If it still feels too big, cut the step in half: just open your laptop screen or sit at your desk. You do not need to finish the task.",
+                who: "A trusted friend, colleague, or mentor",
+                script: "Can you help me choose the first step?\n\nI need to work on [TASK], but I'm struggling to figure out where to start."
+            },
+            "PB-002": {
+                category: "Administrative & Procedures",
+                title: "Clarify a Service or Administrative Requirement",
+                purpose: "Confirm online options before planning in-person visits.",
+                action: "Identify the exact issue and check the service app or website to see if it can be resolved online.",
+                alternative: "If the online portal is confusing, don't rush there in person. Send an email or message asking if an appointment is needed and what documents to bring.",
+                who: "Customer Support / Service Helpdesk",
+                script: "Hello,\n\nI need to handle [ISSUE].\n\nCan this be resolved online? If not, what documents do I need to bring and do I need an appointment?"
+            },
+            "PB-003": {
+                category: "Communication & Scheduling",
+                title: "Request an Appointment or Medical Exam",
+                purpose: "Overcome friction when scheduling healthcare or professional appointments.",
+                action: "Locate your reference ID or document and write down the exact name of the service/appointment needed.",
+                alternative: "If online booking fails or feels overwhelming, use the pre-written email below to reach out directly to the clinic or office.",
+                who: "Clinic / Provider Office",
+                script: "Hello,\n\nI need to schedule an appointment for [SERVICE/EXAM].\n\nCould you please let me know the available times and how I should proceed?\n\nThank you."
+            },
+            "PB-004": {
+                category: "Cognitive Relief",
+                title: "Unstuck Your Brain (2-Minute Rule)",
+                purpose: "Break out of cognitive freeze without guilt.",
+                action: "Set a timer for 2 minutes. Do any tiny action related to your goal, then stop when the timer rings.",
+                alternative: "If you cannot start, take a 5-minute break away from your screen. Returning later is a valid strategic choice, not a failure.",
+                who: "Self / Accountable Support",
+                script: "I'm feeling stuck with [TASK]. I am taking a 5-minute reset and will try one tiny step at [TIME]."
+            }
+        };
+
+        let currentScriptText = "";
+
+        function selectStarter(id) {
+            const data = database[id];
+            if (!data) return;
+
+            document.getElementById('card-category').innerText = data.category;
+            document.getElementById('card-title').innerText = data.title;
+            document.getElementById('card-purpose').innerText = data.purpose;
+            document.getElementById('card-action').innerText = data.action;
+            document.getElementById('card-alternative').innerText = data.alternative;
+            document.getElementById('card-who').innerText = data.who;
+            document.getElementById('card-script').innerText = data.script;
+
+            currentScriptText = data.script;
+
+            document.getElementById('starter-section').classList.add('hidden');
+            document.getElementById('action-card').classList.remove('hidden');
+        }
+
+        function resetUI() {
+            document.getElementById('action-card').classList.add('hidden');
+            document.getElementById('starter-section').classList.remove('hidden');
+        }
+
+        function copyToClipboard() {
+            if (!currentScriptText) return;
+            navigator.clipboard.writeText(currentScriptText).then(() => {
+                const btn = document.getElementById('copy-btn');
+                btn.innerText = "✓ Copied!";
+                btn.classList.replace('bg-brandDark', 'bg-emerald-600');
+                setTimeout(() => {
+                    btn.innerText = "📋 Copy Text";
+                    btn.classList.replace('bg-emerald-600', 'bg-brandDark');
+                }, 2000);
+            });
+        }
+
+        function sendFeedback(positive) {
+            alert(positive ? "Thank you! Keep going, one step at a time." : "Understood. We'll make the next steps even simpler.");
+        }
+    </script>
+</body>
+</html>
