@@ -20,20 +20,21 @@
     }
   </script>
 
- <style>
-    /* Eleva o z-index do widget da Wexio acima de todas as camadas */
-    iframe[src*="wexio"], 
-    #wexio-widget-container {
+<style>
+    /* Mantém a janela do chat acima de tudo */
+    iframe[src*="wexio"] {
       z-index: 99999 !important;
     }
-    /* Esconde o texto de acessibilidade sobreposto no botão flutuante da Wexio */
-    #wexio-widget-container button,
-    [id*="wexio"] button,
-    [class*="wexio"] button {
-      font-size: 0 !important;
-      color: transparent !important;
-      text-indent: -9999px !important;
-      overflow: hidden !important;
+
+    /* Esconde apenas o botão flutuante circular (64px) no canto inferior direito */
+    iframe[src*="wexio"][style*="width: 64px"],
+    iframe[src*="wexio"][style*="height: 64px"],
+    iframe[src*="wexio"][style*="width: 60px"],
+    iframe[src*="wexio"][style*="height: 60px"],
+    iframe[src*="wexio"][style*="border-radius: 50%"] {
+      display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
   </style>
 </head>
