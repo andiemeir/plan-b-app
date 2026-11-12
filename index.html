@@ -21,22 +21,11 @@
   </script>
 
 <style>
-    /* Mantém a janela do chat acima de tudo */
-    iframe[src*="wexio"] {
-      z-index: 99999 !important;
-    }
-
-    /* Esconde apenas o botão flutuante circular (64px) no canto inferior direito */
-    iframe[src*="wexio"][style*="width: 64px"],
-    iframe[src*="wexio"][style*="height: 64px"],
-    iframe[src*="wexio"][style*="width: 60px"],
-    iframe[src*="wexio"][style*="height: 60px"],
-    iframe[src*="wexio"][style*="border-radius: 50%"] {
-      display: none !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-  </style>
+  iframe[src*="wexio"],
+  #wexio-widget-container {
+    z-index: 99999 !important;
+  }
+</style>
 </head>
 <body class="bg-brandBg text-slate-800 min-h-screen flex flex-col font-sans">
 
