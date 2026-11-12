@@ -20,11 +20,20 @@
     }
   </script>
 
-  <style>
+ <style>
     /* Eleva o z-index do widget da Wexio acima de todas as camadas */
     iframe[src*="wexio"], 
     #wexio-widget-container {
       z-index: 99999 !important;
+    }
+    /* Esconde o texto de acessibilidade sobreposto no botão flutuante da Wexio */
+    #wexio-widget-container button,
+    [id*="wexio"] button,
+    [class*="wexio"] button {
+      font-size: 0 !important;
+      color: transparent !important;
+      text-indent: -9999px !important;
+      overflow: hidden !important;
     }
   </style>
 </head>
